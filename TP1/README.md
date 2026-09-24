@@ -3,7 +3,8 @@
 ## Autor 
 - nome: João Paulo Pires Cascais
 - id: a110393
-- foto: <img src="0155baed-793d-44a1-88e8-dfb3e4176d2f.jpeg" width = "200">
+- foto:
+<img src="0155baed-793d-44a1-88e8-dfb3e4176d2f.jpeg" width = "200">
 
 
 ## Resumo
