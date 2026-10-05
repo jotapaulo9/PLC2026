@@ -20,9 +20,6 @@ alguns cuidados:
 - Nos cabeçalhos, conto o número de cardinais para saber se é h1, h2 ou h3.
 - Nas listas numeradas, a lista é aberta quando aparece o primeiro item e fechada quando aparece uma linha que já não é item.
 
-Para correr o programa:
-
-python tpc2.py exemplo.md exemplo.html
 
 ## Lista de Resultados
 
