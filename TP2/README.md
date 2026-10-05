@@ -24,5 +24,5 @@ alguns cuidados:
 ## Lista de Resultados
 
 - [tpc2.py](tpc2.py): código do conversor
-- [exemplo.md](exemplo.md): ficheiro de teste em Markdown
-- [Exemplo.html](Exemplo.html): resultado da conversão do ficheiro de teste
+- [Exemplo.md](Exemplo.md): ficheiro de teste em Markdown
+- [exemplo.html](exemplo.html): resultado da conversão do ficheiro de teste
