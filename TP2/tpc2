@@ -1,0 +1,84 @@
+import re
+import sys
+
+# expressões regulares 
+er_cabecalho = re.compile(r'^(?P<nivel>#{1,3}) (?P<texto>.+)$')
+er_bold = re.compile(r'\*\*(?P<texto>.+?)\*\*')
+er_italico = re.compile(r'\*(?P<texto>.+?)\*')
+er_imagem = re.compile(r'!\[(?P<alt>.*?)\]\((?P<src>.*?)\)')
+er_link = re.compile(r'\[(?P<texto>.*?)\]\((?P<url>.*?)\)')
+er_item = re.compile(r'^\d+\. (?P<texto>.+)$')
+
+
+def cabecalho(m):
+    # O nivel do cabeçalho é o número de '#'
+    n = len(m.group('nivel'))
+    return f"<h{n}>{m.group('texto')}</h{n}>"
+
+
+def converter_linha(linha):
+    # Cabeçalhos: # , ## , ###
+    linha = er_cabecalho.sub(cabecalho, linha)
+
+    # Bold 
+    linha = er_bold.sub(r'<b>\g<texto></b>', linha)
+
+    # Italico
+    linha = er_italico.sub(r'<i>\g<texto></i>', linha)
+
+    # Imagem 
+    linha = er_imagem.sub(r'<img src="\g<src>" alt="\g<alt>"/>', linha)
+
+    # Link
+    linha = er_link.sub(r'<a href="\g<url>">\g<texto></a>', linha)
+
+    return linha
+
+
+def converter(texto):
+    resultado = []
+    dentro_lista = False
+
+    for linha in texto.split('\n'):
+        item = er_item.match(linha)
+
+        if item:
+            # abre a lista no primeiro item
+            if not dentro_lista:
+                resultado.append('<ol>')
+                dentro_lista = True
+            resultado.append('<li>' + converter_linha(item.group('texto')) + '</li>')
+        else:
+            # fecha a lista quando aparece uma linha que não é item
+            if dentro_lista:
+                resultado.append('</ol>')
+                dentro_lista = False
+            resultado.append(converter_linha(linha))
+
+    # se o texto acabar dentro de uma lista
+    if dentro_lista:
+        resultado.append('</ol>')
+
+    return '\n'.join(resultado)
+
+
+def main():
+    if len(sys.argv) < 2:
+        print("Uso: python tpc2.py ficheiro.md [ficheiro.html]")
+        return
+
+    with open(sys.argv[1], encoding='utf-8') as f:
+        texto = f.read()
+
+    html = converter(texto)
+
+    if len(sys.argv) >= 3:
+        with open(sys.argv[2], 'w', encoding='utf-8') as f:
+            f.write(html)
+        print("HTML guardado em", sys.argv[2])
+    else:
+        print(html)
+
+
+if __name__ == '__main__':
+    main()
